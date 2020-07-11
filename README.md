@@ -4,11 +4,16 @@
 > 
 > 欢迎任何人参与和完善：一个人可以走的很快，但是一群人却可以走的更远。
 
-* [在线阅读](https://ds.apachecn.org)
+* [在线阅读](https://sec.apachecn.org)
 * [ApacheCN 面试求职交流群 724187166](https://jq.qq.com/?_wv=1027&k=54ujcL3)
 * [ApacheCN 学习资源](http://www.apachecn.org/)
 
 ## 目录
+
++   [Kali Linux 秘籍 中文版](docs/kali-linux-cookbook-zh/README.md)
++   [Kali Linux 网络扫描秘籍 中文版](docs/kali-linux-network-scanning-cookbook-zh/README.md)
++   [Kali Linux Web 渗透测试秘籍 中文版](docs/kali-linux-web-pentest-cookbook-zh/README.md)
++   [Kali Linux 无线渗透测试入门指南](docs/kali-linux-wireless-pentest-zh/README.md)
 
 ## 贡献指南
 
