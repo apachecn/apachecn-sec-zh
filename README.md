@@ -19,6 +19,17 @@
 +   [浅入浅出 Android 安全中文版](docs/asani-zh/README.md)
 +   [格式化字符串漏洞利用](docs/exp-fmt-str-vul-zh/README.md)
 
+## 下载
+
+### NPM
+
+```
+npm install -g apachecn-sec-zh
+apachecn-sec-zh <port>
+' + 
+                '# 访问 http://localhost:{port} 查看文档
+```
+
 ## 贡献指南
 
 本项目需要校对，欢迎大家提交 Pull Request。
