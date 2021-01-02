@@ -2,7 +2,7 @@
 
 > 协议：[CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 > 
-> 欢迎任何人参与和完善：一个人可以走的很快，但是一群人却可以走的更远。
+> 我生不为逐鹿来，都门懒筑黄金台。状元百官都如狗，总是刀下觳觫材。——《七杀诗》
 
 * [在线阅读](https://sec.apachecn.org)
 * [在线阅读（Gitee）](https://apachecn.gitee.io/apachecn-sec-zh/)
