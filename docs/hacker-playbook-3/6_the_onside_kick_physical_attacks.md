@@ -2,7 +2,7 @@
 
 > 译者：[@Snowming](https://github.com/Snowming04)
 
-![](img/chapter_6/6-1.png)
+![](img/6-1.png)
 
 作为安全评估的一部分，CSK 要求你的团队对基础设施进行物理评估。这就需要检查他们的门和安保设施是否合格。在得到了授权的前提下可以进行现场测试，以确定他们警卫的反应和响应时间。
 
@@ -16,7 +16,7 @@
 
 上一版书里，我提到了我很喜欢复制 ProxCard Ⅱ 卡，因为它们没有任何保护措施，所以易于克隆。并且 ProxCard Ⅱ 卡一般都可以成批购买，用来暴力破解，简直再方便不过。破解的过程都是基于 Proxmark3 工具完成的。现在，它发布了一个主打便携的新型号，叫 [Proxmark3 RDV2 Kit](http://hackerwarehouse.com/product/proxmark3-rdv2-kit/)。新版的可插电池用，并且体积也小巧很多。
 
-![](img/chapter_6/6-2.png)
+![](img/6-2.png)
 
 还有一些常见的可供破解的卡：
 - HID iClass (13.56 MHz)
@@ -53,9 +53,9 @@ LAN Turtle 的目的是取代 dropbox（一款可以同步本地文件的网络�
 
 是这样的，因为 LAN Turtle 会被插入入侵目标组织内网中的某个台式机的后面，所以我们不能直接连接到它。因此，我们将让 LAN Turtle 首先通过端口 443 外连到 VPN，然后作为服务器返回到我们的 OpenVPN 。从我们用来做攻击的 Kali 机器中，我们也必须登录进 VPN 服务器。一旦 LAN Turtle 和我们的攻击者机器都通过VPN 连接到我们的服务器中，我们就可以把流量从 LAN Turtle 转发到攻击机器来进行扫描或漏洞利用。
 
-![](img/chapter_6/6-3.png)
+![](img/6-3.png)
 
-![](img/chapter_6/6-4.png)
+![](img/6-4.png)
 
 虽然 OpenVPN 反向代理通道不是什么新技术，但 Hak5 的团队在整合教程方面做得非常好。我不得不修改了以下一些命令，如果你想了解更多，请观看他们的 YouTube 视频：https://www.youtube.com/watch?v=b7qr0laM8kA 。
 
@@ -118,7 +118,7 @@ LAN Turtle 的目的是取代 dropbox（一款可以同步本地文件的网络�
             * 所有服务端私有子网
             * 所有其他的 VPN 客户端
             
-![](img/chapter_6/6-5.png)
+![](img/6-5.png)
 
 下载 OpenVPN 配置文件：
 * 连接下载配置文件：
@@ -129,7 +129,7 @@ LAN Turtle 的目的是取代 dropbox（一款可以同步本地文件的网络�
 
 设置 LAN Turtle 和初始配置：
 
-![](img/chapter_6/6-6.png)
+![](img/6-6.png)
 
 * 插入 USB 并且自动连入网络
 * nmap 扫描本地 22 端口
@@ -178,11 +178,11 @@ LAN Turtle 的目的是取代 dropbox（一款可以同步本地文件的网络�
     * 保存并更新
 * 通过 LAN Turtle 上的 SSH 连接，使用 `reboot` 命令重启
 
-![](img/chapter_6/6-7.png)
+![](img/6-7.png)
 
 现在，我们可以让攻击机透过在 LAN Turtle 上架设的 VPN 通道，将我们的所有流量传输到受害者公司内网。在下图中，我们登录进入 VPN 服务器，扫描 LAN Turtle 的范围为 10.100.100.0/24 的内部网络。我们可以看到，我们已经成功地配置了从 VPN 网关通过 LAN Turtle 到公司网络的路由传输。现在，在 Kali 攻击机上面，可以运行完整的漏洞扫描、网络抓取、Masscans 扫描甚至更多其他操作。
 
-![](img/chapter_6/6-8.png)
+![](img/6-8.png)
 
 好的！现在你有了一个快速插入的设备，它让你与受害者网络保持全局连接。为了做的更好，还可以完善一下：
 * 设置一个每天重启设备的定时任务。VPN 隧道连接可能会断开，但每当 LAN Turtle 重新启动时，VPN 连接会重新启动。
@@ -192,7 +192,7 @@ LAN Turtle 的目的是取代 dropbox（一款可以同步本地文件的网络�
 ## Packet Squirrel
 Packet Squirrel 使用 Micro-USB 接口充电，但是并非是通过 USB 接口那一端插入有线 USB 网卡，Packet Squirrel 两端都接网线，这是另一种捕获流量或创建 VPN 连接的方式。
 
-![](img/chapter_6/6-9.png)
+![](img/6-9.png)
 
 配置 Packet Squirrel 的方法和 LAN Turtle 差不多；
 * 编辑 /root/payloads/switch3/payload.sh
@@ -252,7 +252,7 @@ Guided Mode（所以选项都保留默认值）
 * 在 Bash Bunny 上，打开开关1（离 USB 插孔最远的那个开关）上，然后插入。完成后，请确保连接到 Bash Bunny，在那里你可以看到 Cloud <-> Laptop <-> Bunny image
 * 在你的 Kali 机器上，用密码 hak5bunny 通过 SSH 进入 Bash Bunny
 
-![](img/chapter_6/6-10.png)
+![](img/6-10.png)
 
 登陆进入你的 Bash Bunny
 * 在你的 Kali 机器上，用密码 hak5bunny 通过 SSH 进入 Bash Bunny
@@ -282,7 +282,7 @@ cp -R /opt/bashbunnypayloads/payloads/library/credentials/QuickCreds/* /media/ro
 QuickCreds 是一个很棒的工具，它使用 Responder 攻击从锁定和未锁定的机器上捕获 NTLMv2 Challenge 哈希。假设你在做一次物理评估，为此你闯进一栋大楼，碰到了一堆锁着的机器。你使用 QuickCreds 的开关插入 Bash Bunny ，每台机器等待大约 2 分钟。Bash Bunny 将接管网络适配器，使用 Response 重新传输任何共享和身份验证请求，然后记录这些数据。它将所有凭证保存到 USB 磁盘上的 loot 文件夹中。
 > 译者注: 如若不懂“NTLMv2 Challenge 哈希”，可以参考此篇：[Windows 下的密码 hash——NTLM hash 和 Net-NTLM hash 介绍](https://3gstudent.github.io/Windows%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81hash-NTLM-hash%E5%92%8CNet-NTLM-hash%E4%BB%8B%E7%BB%8D/)
 
-![](img/chapter_6/6-11.png)
+![](img/6-11.png)
 
 参考资料：
 * https://github.com/hak5/bashbunny-payloads/tree/master/payloads/library/credentials/QuickCreds 
@@ -301,7 +301,7 @@ BunnyTap 基于由 Samy Kamkar 开发的知名工具 PoisonTap ( https://www.you
 
 从一次物理评估的角度来看，你进入他们的办公室，在每台机器上插上 Bash Bunny，然后等待大约2分钟。Bash Bunny 会让电脑中的所有流量都走 Bash Bunny 转发。如果他们有一个打开并且活动的浏览器（如广告或任何定期更新的页面），BunnyTap 将启动并向所有 Alexa Top 100,0000 网站发出请求。此时，受害者用户若登录到这些站点中的任何一个，BunnyTap 将捕获受害者的所有 cookie。现在，我们可以将这些 cookie 发回到自己的计算机上，把我们的 cookie 替换成他们的，这样即可在不知道他们密码的情况下，冒充他们的身份进入网站。
 
-![](img/chapter_6/6-12.png)
+![](img/6-12.png)
 
 请务必查看所有 Bash Bunny 的 payload：
 * https://github.com/hak5/bashbunny-payloads/tree/master/payloads/library 
@@ -309,11 +309,11 @@ BunnyTap 基于由 Samy Kamkar 开发的知名工具 PoisonTap ( https://www.you
 ## WiFi
  WiFi 攻击方面，我们攻击受害者的方式没有什么大变化。虽然 WEP 加密网络的使用显著减少，但攻击方式仍包括反认证、aireplay-ng 和捕获 IV 数据包。对于 WPA 无线网络，最好的攻击手段，依旧是对客户端进行反认证 、捕获握手包、将其传递给 hashcat 对密码进行破解。以上这几种方法屡试不爽。工具方面，我最爱的工具是 [Wifite2 的完全重写的版本](https://github.com/derv82/wifite2)，这个新版本带有一个 Alfa AWUS036NHA 无线网卡。这是一个非常易于使用的接口，可以支持多种攻击，基于 aircrack 工具套装，令它可以很容易地破解捕获的哈希值。
 
-![](img/chapter_6/6-13.png)
+![](img/6-13.png)
 
 关于发动 WiFi 攻击的装备，除了使用一对 Alfa 无线网卡，执行更加隐蔽的 WiFi 攻击的简单方法是使用 [WiFi Pineapple Nano](https://www.wifipineapple.com/pages/nano)。如果你想建立一个假的主无线接入点，通过天线改变他们流量的通信路径，用伪造页面捕获身份验证，执行所有的中间人攻击，运行 Responder 和其他攻击的话，WiFi Pineapple Nano 是一个能执行此操作的轻量级硬件工具。
 
-![](img/chapter_6/6-14.png)
+![](img/6-14.png)
 
 除了 Pineapple，还有其他一些工具可以用来攻击公司网络。其中一个就是 [eaphammer](https://github.com/s0lst1c3/eaphammer)。
 

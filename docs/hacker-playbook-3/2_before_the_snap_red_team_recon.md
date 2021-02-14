@@ -2,7 +2,7 @@
 
 > 译者：[@Snowming](https://github.com/Snowming04)
 
-![](img/chapter_2/2-1.PNG)
+![](img/2-1.PNG)
 
 在 The Hacking Playbook 2 中，前面的发球部分重点介绍了一些不同的工具，如 Recon-NG、Discover、Spiderfoot、Gitrob、Masscan、Sparta、HTTP Screenshot、漏洞扫描器（包括 nessus，openvas）、Burp 套件等。这些工具我们可以在外网或内网络使用，对目标的基础设施进行侦察或扫描。在本书中我们将延续这一做法，然后从红队的角度对侦察阶段进行拓展。
 
@@ -27,7 +27,7 @@
 
 这是一个非常简单的脚本，它每天用默认的端口运行 nmap，然后使用 ndiff 比较结果。然后，我们可以获取这个脚本的输出结果，并让它把每天发现的新端口及时通知我们的团队。<br>
 
-<img src="img/chapter_2/2-2.PNG" width = "500" height = "200" alt="图片名称" align=center />
+<img src="img/2-2.PNG" width = "500" height = "200" alt="图片名称" align=center />
 
 在上一本书中，我们着重讨论了 [Masscan](https://github.com/robertdavidgraham/masscan) 的好处，以及它比 nmap 的速度快多少。Masscan 的开发者说，如果你的网络带宽足够大，你可以在6分钟内扫描完毕整个互联网。所以说，当扫描大的范围时，Masscan 是很可靠的。Masscan 对我们最初的侦察很有用，但通常不用于比较差异。
 
@@ -55,7 +55,7 @@
 - ./masshttp.sh
 - firefox clusters.html
 
-<img src="img/chapter_2/2-3.PNG" width = "400" height = "300" alt="图片名称" align=center />
+<img src="img/2-3.PNG" width = "400" height = "300" alt="图片名称" align=center />
 
 另一个可以用到的工具是 [Eyewitness](https://github.com/ChrisTruncer/EyeWitness)。
 
@@ -66,7 +66,7 @@ Eyewitness 是另一个很好的工具，它用 XML 文件的方式输出 nmap �
 >- cd /opt/EyeWitness
 >- nmap [IP Range]/24 —open -p 80,443 -oX scan.xml
 >- python ./EyeWitness.py -x scan.xml —web
-><img src="img/chapter_2/2-4.PNG" width = "400" height = "400" alt="图片名称" align=center />
+><img src="img/2-4.PNG" width = "400" height = "400" alt="图片名称" align=center />
 
 ### 云扫描 
 随着越来越多的公司转向使用不同的云基础设施，一些围绕云服务的新型攻击和传统攻击逐渐形成。这通常是由于公司错误的配置和缺乏对云基础设施上公共条款的确切了解。无论是选择亚马逊 EC2、Azure、谷歌云还是其他云服务提供商，使用不同的云基础设施都已成为一种全球趋势。
@@ -109,7 +109,7 @@ Censys 的最佳特性之一是它从 SSL 证书中提取信息。通常，红�
 这些扫描的一个问题是它们可能会延迟几天或几周。在这种情况下，需要用一天的时间来扫描标题信息。另外，在我的站点上创建 SSL 证书之后，信息在 Censys.io 站点上显示花费了四天时间。但是在数据准确性方面，Censys.io 相当可靠。
 
 下面，我们通过扫描找到目标网站 cyberspacekittens.com 的信息。通过解析服务器的 SSL 证书，我们能够确定受害者的服务器托管在 AWS 上。<br>
-<img src="img/chapter_2/2-5.PNG" width = "500" height = "300" alt="图片名称" align=center /><br>
+<img src="img/2-5.PNG" width = "500" height = "300" alt="图片名称" align=center /><br>
 
 还有一个 [Censys脚本工具](https://github.com/christophetd/censys-subdomain-finder)，可以通过脚本的方式来进行查询。
 
@@ -124,9 +124,9 @@ Censys 的最佳特性之一是它从 SSL 证书中提取信息。通常，红�
 - cd /opt/sslScrape
 - python ./sslScrape.py [IP 地址 CIDR 范围]
 
-<img src="img/chapter_2/2-6.PNG" width = "430" height = "300" alt="图片名称" align=center /><br>
+<img src="img/2-6.PNG" width = "430" height = "300" alt="图片名称" align=center /><br>
 
-<img src="img/chapter_2/2-7.PNG" width = "350" height = "450" alt="图片名称" align=center /><br>
+<img src="img/2-7.PNG" width = "350" height = "450" alt="图片名称" align=center /><br>
 
 云 IP 地址的例子:
 - Amazon: http://bit.ly/2vUSjED
@@ -233,7 +233,7 @@ Truffle Hog工具会扫描不同的提交历史记录和分支来获取高机密
 - cd /opt/trufflehog/truffleHog
 - python truffleHog.py https://github.com/cyberspacekittens/dnscat2
 
-![](img/chapter_2/2-8.PNG)
+![](img/2-8.PNG)
 
 正如我们在 commit 历史记录中看到的，AWS 密钥和 SSH 密钥被从 server/controller/csk.config 文件中删除了。但是如果查看[当前仓库](https://github.com/cheetz/dnscat2/tree/master/server/controller)，你找不到这个文件。
 
@@ -271,7 +271,7 @@ docker cp <container-id>:/data/results.txt ./results.txt
 - ./slurp domain -t cyberspacekittens.com
 - ./slurp keyword -t cyberspacekittens
 
-![](img/chapter_2/2-9.PNG)
+![](img/2-9.PNG)
 
 #### Bucket Finder
 另一个工具 Bucket Finder 不仅会尝试查找不同的 bucket，还会从这些 bucket 中下载所有的内容进行分析:
@@ -280,11 +280,11 @@ docker cp <container-id>:/data/results.txt ./results.txt
 - cd /opt/bucket_finder
 - ./bucket_finder.rb —region us my_words —download
 
-![](img/chapter_2/2-10.PNG)
+![](img/2-10.PNG)
 
 你一直在基于 Cyber Space Kittens 的基础设施进行搜寻，并发现了他们的一个 S3 bucket( cyberspacekittens.s3.amazonaws.com )。在 S3 bucket 中检索可见的和不可见的内容时，你的第一步要做什么呢？你可以首先把它弹到浏览器中来看一些信息:
 
-![](img/chapter_2/2-11.PNG)
+![](img/2-11.PNG)
 
 在开始之前，我们需要创建一个 AWS 帐户来获得一个访问密钥 ID。你可以在 Amazon [免费创建你的帐户](https://aws.amazon.com/s/dm/optimization/server-side-test/free-tier/free_np/)。创建帐户后，登录 AWS，转到你的[安全凭据](https://amzn.to/2ItaySR)，然后转到访问密钥。一旦你有了 AWS Access ID 和密钥，我们就可以查询 S3 bucket 了。
 
@@ -308,7 +308,7 @@ echo “test” > test.txt
 aws s3 mv test.txt s3://cyberspacekittens
 aws s3 ls s3://cyberspacekittens
 ```
-![](img/chapter_2/2-12.PNG)
+![](img/2-12.PNG)
 
 *注意，write 已被从 Everyone 组中删除。这只是为了示范。*
 
@@ -322,7 +322,7 @@ aws s3 ls s3://cyberspacekittens
 
 接下来，我们看看是否可以修改这些 bucket 本身。这可以通过以下命令来完成:
 - aws s3api get-bucket-acl —bucket cyberspacekittens
-![](img/chapter_2/2-13.PNG)
+![](img/2-13.PNG)
 
 同样，在这两种情况下，读权限都是全局允许的，但是完全控制或任何写入的权限只有名为 “secure” 的帐户才有。如果我们可以进入 bucket，那么我们可以使用`—grant-full-control`来赋予我们自己对 bucket 和对象的完全控制权限。
 
@@ -368,7 +368,7 @@ cd /opt/tko-subs/
 
 这可能需要很长时间来运行，因为它检查 Bing、Yahoo、Google、Ask Search、PGP 仓库、文件等等。这也可能让你的网络被搜索引擎们识别成机器人。并且如果你产生了太多的搜索请求，那么可能需要填写验证码。
 
-![](img/chapter_2/2-14.PNG)
+![](img/2-14.PNG)
 
 针对你自己的公司进行此操作。你看到任何你可以识别的 email 地址了吗？这可能是可以在一个大规模红队活动中被设为靶子的第一个 email 地址。
 

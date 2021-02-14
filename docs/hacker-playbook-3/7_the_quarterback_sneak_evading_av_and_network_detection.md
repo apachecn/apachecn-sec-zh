@@ -2,7 +2,7 @@
 
 > 译者：[@Snowming](https://github.com/Snowming04)
 
-![](img/chapter_7/7-1.png)
+![](img/7-1.png)
 
 ## 为红队行动编写工具
 红队人员和渗透测试人员比较明显的区别之一就是红队人员能快速的适应并理解不同的防护。无论是理解低级语言（机器代码和汇编语言），编写`shellcode`，创建自定义的 C2 二进制可执行文件，还是修改代码来隐藏恶意程序，它们都是我们（红队）日常工作的一部分。我总是遇到不会编程的渗透测试人员，虽然这不是一项硬性要求，但是编程水平确实会决定他们专业成长的高度。 因此，我专门编写这一章节来给那些没有使用过偏向底层的低级语言编程的人一个良好的入门方向。
@@ -121,7 +121,7 @@ int decrypt(const char* string, char result[])
 
 该程序的第 3 版本将前一个示例中的字符串加密与使用指针调用函数的方法相结合。有趣的是，如果你将已编译的二进制文件提交到 VirusTotal（病毒检测网站），你将不再在导入部分中看到 User32.dll。在下面的图片中，左侧图像是版本1的检测结果，右侧图像是带有调用指针的版本3的检测结果 。
 
-![](img/chapter_7/7-2.png)
+![](img/7-2.png)
 
 你可以在以下网址找到版本3的完整源代码：https://github.com/cheetz/ceylogger/tree/master/version3 。
 
@@ -141,7 +141,7 @@ int decrypt(const char* string, char result[])
 
 > 译者注：根据上面的链接，译者点进去看了每一个数据，但是发现数据都有所更新，所以把上面的内容修改为和链接到的内容一致的最新数据。但是下面的图片是书上的原图，所以是老的过期的数据。下面的图片是说，将版本3编译为 64 位的 payload，得到 0/66（无一家一家检测出）的结果，但是现在已经是 1/69，也就是 69 个杀软种有一个可以检测出病毒。
 
-![](img/chapter_7/7-3.png)
+![](img/7-3.png)
 
 **实验：**
 
@@ -358,7 +358,7 @@ Windows 要求：
 
 配置和开发了恶意软件后，将其移至 Web 目录（malware.hta，malware.html，malware.payload），启动 apache2 服务，然后启动你的 Meterpreter 处理程序。你现在已经做好准备，通过诱导受害者访问你的恶意站点来对其发动社会工程学攻击！下图中给出的示例是 Sharpshooter 的 SharePoint 在线模板。当受害者使用 IE/Edge 浏览器访问你的恶意网页时，HTA 会自动下载并提示运行。一旦显示了提示并选择运行的话，stager payload 就会运行，下载辅助 payload（满足沙箱控件的情况下），并在内存中执行我们的 Meterpreter payload。
 
-![](img/chapter_7/7-4.png)
+![](img/7-4.png)
 
 补充信息：
 * https://www.mdsec.co.uk/2018/03/payload-generation-using-sharpshooter/ 
@@ -378,17 +378,17 @@ Windows 要求：
 * 生成
 * 使用 Metasploit 创建一个新的 windows/meterpreter/reverse_http 的监听器
 
-![](img/chapter_7/7-5.png)
+![](img/7-5.png)
 
 在我们的 Kali 实例中，我们使用 GreatSCT 来创建 `shellcode.xml` 文件，该文件包含构建信息和一个 Meterpreter 反向 http shell。需要将此文件移动到受害系统并使用 MSBuild 进行调用。
 
 \*注意：我观察到 GreatSCT 项目正在 [develop 分支](https://github.com/GreatSCT/GreatSCT/tree/develop)上进行活跃的开发，其中包括 https Meterpreter 和其他应用程序白名单绕过命令执行。我估计在本书发布之前，就会被合并到 master 分支。
 
-![](img/chapter_7/7-6.png)
+![](img/7-6.png)
 
 在 Windows 受害者计算机上执行文件调用后，使用 `C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe shellcode.xml` 命令，.NET 将开始构建 shellcode.xml 文件。在此过程中，将在受害者计算机上生成一个反向 http Meterpreter 会话来绕过任何应用程白名单。你可能希望编辑 shellcode.xml 文件以插入经过混淆的 payload，因为 Meterpreter 默认的 payload 很可能会触发杀毒软件。
 
-![](img/chapter_7/7-7.png)
+![](img/7-7.png)
 
 可以使用许多种不同的方法来进行应用程序白名单绕过，光这一部分内容就足以写成一本书。以下是一些额外的资料：
 * 使用 Windows 默认可执行文件的大量示例：
@@ -460,11 +460,11 @@ Powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy B
     * ENCODING
 * 在这个例子中，我选择了 SecureString（AES），但你可以把所有这些混淆技术都试一试。
 
-![](img/chapter_7/7-8.png)
+![](img/7-8.png)
 
 混淆后的字符串包含一个随机生成的密钥和一个加密的安全字符串。在管理员权限下运行 PowerShell，我们仍然可以执行完整的 payload。
 
-![](img/chapter_7/7-9.png)
+![](img/7-9.png)
 
 我们也可以回到主屏幕并创建混淆的 launcher：
 * main 
@@ -472,11 +472,11 @@ Powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy B
 * CLIP++
 * 选择你的执行 flag
 
-![](img/chapter_7/7-10.png)
+![](img/7-10.png)
 
 更棒的是，查看 Windows PowerShell 日志我们会发现，如果脚本是混淆的，日志中也仅仅是记录了混淆后的东西。这个特性可以帮助我们躲避杀毒软件和 SEIM 警报工具。
 
-![](img/chapter_7/7-11.png)
+![](img/7-11.png)
 
 除了 Invoke-Obfuscation 之外，Daniel 还创建了一个名为 [Invoke-CradleCrafter](https://github.com/danielbohannon/Invoke-CradleCrafter) 的工具，该工具专注于远程下载 cradle，是一个 PowerShell 2.0+ 版本兼容的 PowerShell 远程下载 cradle 生成器和混淆器。Invoke-CradleCrafter 的 github README 文档中介绍说，“Invoke-CradleCrafter 的存在是为了帮助蓝队和红队轻松探索、生成和混淆 PowerShell 远程下载 cradle。此外，它可以帮助蓝队测试环境检测的有效性。Invoke-CradleCrafter 可以检测 Invoke-Obfuscation 产生的输出，但是在处理 Invoke-CradleCrafter 时可能会失败，因为它不包含任何字符串拼接、编码、复选标记、类型转换等”。
 
@@ -520,15 +520,15 @@ HideMyPS 将找到所有函数并使用 ROT 对它们进行混淆处理，从 Po
 * cd /opt/HideMyPS
 * python hidemyps.py invoke_mimikatz.ps1 [filename.ps1]
 
-![](img/chapter_7/7-12.png)
+![](img/7-12.png)
 
 现在，看看原始文件和你创建的新文件之间的区别。首先，你可以看到函数名称全部混淆，变量已经被改，字符串被分解为两半，并且所有注释都移除了。
 
-![](img/chapter_7/7-13.png)
+![](img/7-13.png)
 
 你必须记住的一件事是我们更改了 PowerShell 脚本中的所有函数名称。因此，为了调用函数，我们将不得不回顾我们的混淆文件，看看我们做了什么来替换  `Invoke-Mimikatz` 函数。在这个例子中，`Invoke-Mimikatz` 改名为 `Vaibxr-Zvzvxngm`。以下示例是在完全修补的 Windows 10 上运行的，其中 Windows Defender 已经更新到最新版本。
 
-![](img/chapter_7/7-14.png)
+![](img/7-14.png)
 
 ## 本章总结
 作为红队成员或渗透测试工程师，我们总是在与主机/网络检测工具玩猫捉老鼠的游戏。这就是为什么理解潜在保护体系的工作机制、编写底层代码以直接与 Windows API 而不是 shell 命令进行交互，以及跳出框框进行创造性思考这些能力是非常重要的。如果你的关注点仅限于一些常用工具，那么你的入侵行动有很大的概率会在企业环境中被检测到。如果这些工具是公开的，那么安全厂商很可能会在它们刚出现时候就对其进行逆向并且为它们开发签名。你可以利用当前已有的攻击工具并以某种方式对其进行定制化二次开发，使其不能被这些安全厂商识别。
