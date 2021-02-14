@@ -11,14 +11,17 @@
 
 ## 目录
 
-+   [Kali Linux 秘籍 中文版](docs/kali-linux-cookbook-zh/README.md)
-+   [Kali Linux 网络扫描秘籍 中文版](docs/kali-linux-network-scanning-cookbook-zh/README.md)
-+   [Kali Linux Web 渗透测试秘籍 中文版](docs/kali-linux-web-pentest-cookbook-zh/README.md)
-+   [Kali Linux 无线渗透测试入门指南](docs/kali-linux-wireless-pentest-zh/README.md)
-+   [Android 渗透测试学习手册 中文版](docs/lpad-zh/README.md)
-+   [SploitFun Linux x86 Exploit 开发系列教程](docs/sploitfun-linux-x86-exp-tut-zh/README.md)
-+   [浅入浅出 Android 安全中文版](docs/asani-zh/README.md)
-+   [格式化字符串漏洞利用](docs/exp-fmt-str-vul-zh/README.md)
++   [Kali Linux 秘籍 中文版](docs/kali-linux-cookbook-zh/SUMMARY.md)
++   [Kali Linux 网络扫描秘籍 中文版](docs/kali-linux-network-scanning-cookbook-zh/SUMMARY.md)
++   [Kali Linux Web 渗透测试秘籍 中文版](docs/kali-linux-web-pentest-cookbook-zh/SUMMARY.md)
++   [Kali Linux 无线渗透测试入门指南](docs/kali-linux-wireless-pentest-zh/SUMMARY.md)
++   [Android 渗透测试学习手册 中文版](docs/lpad-zh/SUMMARY.md)
++   [SploitFun Linux x86 Exploit 开发系列教程](docs/sploitfun-linux-x86-exp-tut-zh/SUMMARY.md)
++   [浅入浅出 Android 安全中文版](docs/asani-zh/SUMMARY.md)
++   [格式化字符串漏洞利用](docs/exp-fmt-str-vul-zh/SUMMARY.md)
++   [安卓应用安全指南 中文版](docs/android-app-sec-guidebook-zh/SUMMARY.md)
++   [Web Hacking 101 中文版](docs/web-hacking-101-zh/SUMMARY.md)
++   [渗透测试实战第三版(红队版)](docs/hacker-playbook-3/SUMMARY.md)
 
 ## 下载
 
