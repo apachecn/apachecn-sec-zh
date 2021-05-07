@@ -21,6 +21,7 @@
 +   [格式化字符串漏洞利用](docs/exp-fmt-str-vul-zh/SUMMARY.md)
 +   [安卓应用安全指南 中文版](docs/android-app-sec-guidebook-zh/SUMMARY.md)
 +   [Web Hacking 101 中文版](docs/web-hacking-101-zh/SUMMARY.md)
++   [米斯特白帽培训讲义](docs/mst-sec-lecture-notes/SUMMARY.md)
 +   [渗透测试实战第三版(红队版)](docs/hacker-playbook-3/SUMMARY.md)
 
 ## 下载
