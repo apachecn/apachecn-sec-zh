@@ -11,10 +11,6 @@
 
 ## 目录
 
-+   [Kali Linux 秘籍 中文版](docs/kali-linux-cookbook-zh/SUMMARY.md)
-+   [Kali Linux 网络扫描秘籍 中文版](docs/kali-linux-network-scanning-cookbook-zh/SUMMARY.md)
-+   [Kali Linux Web 渗透测试秘籍 中文版](docs/kali-linux-web-pentest-cookbook-zh/SUMMARY.md)
-+   [Kali Linux 无线渗透测试入门指南](docs/kali-linux-wireless-pentest-zh/SUMMARY.md)
 +   [Android 渗透测试学习手册 中文版](docs/lpad-zh/SUMMARY.md)
 +   [SploitFun Linux x86 Exploit 开发系列教程](docs/sploitfun-linux-x86-exp-tut-zh/SUMMARY.md)
 +   [浅入浅出 Android 安全中文版](docs/asani-zh/SUMMARY.md)
