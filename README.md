@@ -19,6 +19,16 @@
 +   [Web Hacking 101 中文版](docs/web-hacking-101-zh/SUMMARY.md)
 +   [米斯特白帽培训讲义](docs/mst-sec-lecture-notes/SUMMARY.md)
 +   [渗透测试实战第三版(红队版)](docs/hacker-playbook-3/SUMMARY.md)
++   [高级基础设施渗透测试](docs/adv-infra-pentest/SUMMARY.md)
++   [高度安全环境下的高级渗透测试](docs/adv-pentest-hisec-env/SUMMARY.md)
++   [AWS 渗透测试](docs/aws-pentest/SUMMARY.md)
++   [Python Web 渗透测试学习手册](docs/learn-py-web-pentest/SUMMARY.md)
++   [精通机器学习渗透测试](docs/master-ml-pentest/SUMMARY.md)
++   [BashShell  渗透测试](docs/pentest-bash/SUMMARY.md)
++   [树莓派渗透测试](docs/pentest-raspi/SUMMARY.md)
++   [渗透测试 Shellcode](docs/pentest-shellcode/SUMMARY.md)
++   [Python 渗透测试基础知识](docs/py-pentest-essence/SUMMARY.md)
++   [Python Web 渗透测试秘籍](docs/py-web-pentest-cb/SUMMARY.md)
 
 ## 下载
 
