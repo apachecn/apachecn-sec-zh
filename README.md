@@ -29,6 +29,16 @@
 +   [渗透测试 Shellcode](docs/pentest-shellcode/SUMMARY.md)
 +   [Python 渗透测试基础知识](docs/py-pentest-essence/SUMMARY.md)
 +   [Python Web 渗透测试秘籍](docs/py-web-pentest-cb/SUMMARY.md)
++   [为高级渗透测试构建虚拟渗透实验室](docs/build-vir-pentest-lab-adv-pentest/SUMMARY.md)
++   [Python 高效渗透测试](docs/effec-py-pentest/SUMMARY.md)
++   [Python 渗透测试实用指南](docs/handson-pentest-py/SUMMARY.md)
++   [渗透测试即时入门](docs/ins-pentest/SUMMARY.md)
++   [IOT 渗透测试秘籍](docs/iot-pentest-cb/SUMMARY.md)
++   [渗透测试学习指南](docs/learn-pentest/SUMMARY.md)
++   [Python 渗透测试学习指南](docs/learn-pentest-py/SUMMARY.md)
++   [精通高度安全环境下的无线渗透测试](docs/master-wless-pentest-hisec-env/SUMMARY.md)
++   [渗透测试幸存者指南](docs/pentest-survive-guide/SUMMARY.md)
++   [Python 渗透测试秘籍](docs/py-pentest-cb/SUMMARY.md)
 
 ## 下载
 
