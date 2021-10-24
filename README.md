@@ -37,7 +37,7 @@
 +   [渗透测试学习指南](docs/learn-pentest/SUMMARY.md)
 +   [Python 渗透测试学习指南](docs/learn-pentest-py/SUMMARY.md)
 +   [精通高度安全环境下的无线渗透测试](docs/master-wless-pentest-hisec-env/SUMMARY.md)
-+   [渗透测试幸存者指南](docs/pentest-survive-guide/SUMMARY.md)
++   [破解安卓](docs/hack-android/SUMMARY.md)
 +   [Python 渗透测试秘籍](docs/py-pentest-cb/SUMMARY.md)
 
 ## 下载
