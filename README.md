@@ -72,6 +72,7 @@ apachecn-sec-zh <port>
 无需翻译：
 
 Python: penetration testing for developers
+Pentest Survival Guide
 -->
 
 本项目需要校对，欢迎大家提交 Pull Request。
